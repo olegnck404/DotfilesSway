@@ -1,0 +1,104 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+export TERM="xterm-kitty"
+export KWIN_TRIPLE_BUFFER=1
+export LC_ALL=en_US.UTF-8
+
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(host user dir)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator vcs battery time)
+POWERLEVEL9K_PROMPT_ON_NEWLINE=true
+POWERLEVEL9K_KUBECONTEXT_SHOW_ON_COMMAND='kubectl|helm|kubens|kubectx|oc|istioctl|kogito'
+
+# ZPlug
+
+if [[ ! -d ~/.zplug ]];then
+    git clone https://github.com/b4b4r07/zplug ~/.zplug
+fi
+source ~/.zplug/init.zsh
+
+# Theme
+zplug romkatv/powerlevel10k, as:theme
+
+# Aliases
+zplug "robbyrussell/oh-my-zsh", as:plugin, use:"lib/*.zsh"
+
+# Plugins
+zplug "plugins/archlinux",         from:oh-my-zsh
+zplug "plugins/colored-man-pages", from:oh-my-zsh
+zplug "plugins/colorize",          from:oh-my-zsh
+zplug "lib/completion",            from:oh-my-zsh
+zplug "lib/history",               from:oh-my-zsh
+zplug "lib/key-bindings",          from:oh-my-zsh
+zplug "lib/termsupport",           from:oh-my-zsh
+zplug "lib/directories",           from:oh-my-zsh
+zplug "plugins/git",               from:oh-my-zsh
+zplug "plugins/history",           from:oh-my-zsh
+zplug "plugins/extract",       from:oh-my-zsh
+zplug "plugins/dnf",         from:oh-my-zsh
+zplug "zsh-users/zsh-autosuggestions"
+# zplug "zsh-users/zsh-syntax-highlighting"
+zplug "zdharma/fast-syntax-highlighting" # Работает намного быстрее предыдущего плагина и подсвечивает лучше
+zplug "zsh-users/zsh-completions"
+zplug "zsh-users/zsh-history-substring-search"
+zplug "MichaelAquilina/zsh-you-should-use" # Сообщает о том, что для команды существует алиас
+
+zplug check || zplug install
+zplug load
+
+alias disablesleep="sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target"
+alias enablesleep="sudo systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target"
+alias enhance='function ne() { docker run --rm -v "$(pwd)/dirname ${@:$#}":/ne/input -it alexjc/neural-enhance ${@:1:$#-1} "input/basename ${@:$#}"; }; ne'
+alias logout="loginctl terminate-user toxblh"
+alias vnc="x0vncserver -display :0 -PasswordFile ~/.vnc/passwd"
+alias vnc-fire="fire-res && x0vncserver -display :0 -PasswordFile ~/.vnc/passwd"
+alias vnc-mac="mac-res && x0vncserver -display :0 -PasswordFile ~/.vnc/passwd"
+alias native-res="xrandr --output DP-2 --mode 3440x1440 --display :0"
+alias fire-res="xrandr --output DP-2 --mode 1280x800 --display :0"
+alias mac-res="xrandr --output DP-2 --mode 1680x1050 --display :0"
+alias dcam="sudo usbmuxd;iproxy 4747 4747 &;droidcam-cli 127.0.0.1 4747"
+alias telegram="/home/olegnck/Загрузки/Telegram/Telegram"
+    alias n="neofetch"
+    alias k="uname -rs"
+    alias g="gnome-shell --version"
+    alias f="lsb_release -sd"
+    alias m="inxi -G |grep Mesa"
+    alias age="stat / | grep "Birth""
+    alias ram="sudo dmidecode -t memory | grep Speed"
+    alias cpu="lscpu | grep Model"
+    alias cpuc="lscpu"
+    alias w="wine --version"
+    alias pc="inxi -Ixxx"
+    alias net="inxi -Nxxx"
+    #
+    # DNF
+    #
+    alias up="sudo dnf upgrade --refresh --best --allowerasing -y && flatpak update -y"
+    alias clean="sudo dnf autoremove -y && dnf clean all && flatpak uninstall --unused -y && sudo journalctl --vacuum-time=1weeks"
+    alias dnfr="sudo dnf autoremove"
+    alias dnfs="dnf search"
+    alias dnfi="sudo dnf install"
+    #
+    # PC
+    #
+    alias son="sudo systemctl suspend"
+    alias logout="loginctl terminate-user olegnck"
+    alias krista="up && clean && son"
+    alias plafon="up && clean && clear && n"
+    alias ls="ls --color"
+    alias l="lsd --date '+%d.%m.%Y %H:%M' -lah"
+    #
+    # Flatpak
+    #
+    alias fli="flatpak install --noninteractive -y flathub"
+    alias flr="flatpak remove --noninteractive -y"
+    alias fr="flatpak repair"
+    alias fl="flatpak list"
+    #
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
