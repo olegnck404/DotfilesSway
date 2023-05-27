@@ -9,16 +9,16 @@
         "custom/playerctl",
         "custom/scratchpad",
         "idle_inhibitor",
-        "sway/language",
         "cpu",
         "memory",
         "battery",
         "network",
-        "bluetooth",
+		"custom/weather",
         "pulseaudio",
         "clock",
+        "sway/language",
+        "tray",
         "custom/power",
-        "tray"
     ],
     
     "sway/workspaces": {
@@ -36,7 +36,7 @@
 
     "custom/menu": {
         "format": "",
-        "on-click": "exec alacritty",
+        "on-click": "exec rofi -show drun",
         "tooltip": false
     },
     
@@ -183,7 +183,7 @@
         "format": "{icon} {}",
         "tooltip": true,
         "interval": 3600,
-        "exec": "/home/platon/.config/sway/scripts/weather.py",
+        "exec": "/home/olegnck/.config/sway/scripts/weather.py",
         "return-type": "json",
         "format-icons": {
            "Unknown": "✨",
@@ -232,7 +232,7 @@
             "one": "",
             "many": ""
         },
-        "exec": "/home/platon/.config/sway/scripts/scratchpad.sh; pkill -RTMIN+7 waybar",
+        "exec": "/home/olegnck/.config/sway/scripts/scratchpad.sh; pkill -RTMIN+7 waybar",
         "on-click": "swaymsg 'scratchpad show'",
         "signal": 7
     },
